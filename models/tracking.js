@@ -21,19 +21,22 @@ const packageDetailsSchema = new Schema({
   width: { type: String, required: true },
 });
 
-// Schema for Shipping Update
+// Schema for Shipping Updates
 const shippingUpdateSchema = new Schema({
-  message: { type: String, required: true },
+  status: { type: String, required: true, enum: ['Pending', 'In Transit', 'Delivered'] },
   location: { type: String, required: true },
-  status: { type: String, required: true },
-  time: { type: String, required: true },
+  message: { type: String },
+  time: {type: String},
 });
 
 // Main schema that combines the above schemas
-const trackingSchema = new Schema({
-  clientsDetails: [clientDetailsSchema],
-  packageDetails: [packageDetailsSchema],
-  shippingUpdate: [shippingUpdateSchema],
-});
+const trackingSchema = new Schema(
+  {
+    clientDetails: clientDetailsSchema, 
+    packageDetails: [packageDetailsSchema], 
+    shippingUpdate: [shippingUpdateSchema],
+  },
+  { timestamps: true }
+);
 
 module.exports = mongoose.model('Tracking', trackingSchema);
